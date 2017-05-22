@@ -52,7 +52,7 @@ app.set('view engine', 'ejs');
 // The express.static built-in middleware in Express
 // The code below allows serving the files in "views" directly as static files
 // so that the css files and image files can be accessed by the .ejs files.
-app.use(express.static("views"));
+app.use(express.static("public"));
 
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.

@@ -22,34 +22,35 @@
 
         <section class="loginandsignup">
 
-            <h2>Login</h2>
+<!--             <h2>Login</h2>
                 <form action="/login" method="POST">
-                <textarea id = "textarea" name="email" placeholder="Email"></textarea>
-                <textarea id = "textarea" name="password" placeholder="Password"></textarea>
-                <input id="submit" type="submit">
-                <p class="error"></p>
-                </form>
+	                <textarea id = "textarea" name="email" placeholder="Email"></textarea>
+	                <textarea id = "textarea" name="password" placeholder="Password"></textarea>
+	                <input id="submit" type="submit">
+	                <p class="error"></p>
+                </form> -->
 
 <!-- original login.ejs -->
-<!-- <form action="/login" method="post">
-    <div>
-    <label>Username:</label>
-    <input type="text" name="username"/><br/>
-    </div>
-    <div>
-    <label>Password:</label>
-    <input type="password" name="password"/>
-    </div>
-    <div>
-    <input type="submit" value="Submit"/>
-    </div>
-</form> -->
+            <h2>Login</h2>
+								<form action="/login" method="post">
+								    <div>
+								    <label>Email:</label>
+								    <input type="email" name="email"/><br/>
+								    </div>
+								    <div>
+								    <label>Password:</label>
+								    <input type="password" name="password"/>
+								    </div>
+								    <div>
+								    <input type="submit" value="Submit"/>
+								    </div>
+								</form>
 
         <div class="line"></div>
 
 
             <h2>Signup</h2>
-                <form action="/login" method="POST">
+                <form action="/signup" method="POST">
                 <textarea id = "textarea" name="firstName" placeholder="First Name"></textarea>
                 <textarea id = "textarea" name="lastName" placeholder="LastName"></textarea>
                 <textarea id = "textarea" name="email" placeholder="Email"></textarea>

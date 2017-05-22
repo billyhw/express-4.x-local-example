@@ -10,7 +10,12 @@ var db = require('./db');
 // (`username` and `password`) submitted by the user.  The function must verify
 // that the password is correct and then invoke `cb` with a user object, which
 // will be set at `req.user` in route handlers after authentication.
-passport.use(new Strategy(
+
+const localOptions = {
+  usernameField: 'email'
+};
+
+passport.use(new Strategy( localOptions,
   function(username, password, cb) {
     db.users.findByUsername(username, function(err, user) {
       if (err) { return cb(err); }

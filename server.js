@@ -30,6 +30,7 @@ passport.use('local-signup', new Strategy({
     db.users.findByUsername(username, function(err, user) {
       // console.log("from passport local signup", req.body)
       if (err) { return cb(err); }
+      // reminder, password not encrypted yet
       if (req.body.password !== req.body.passwordConfirmation) {
         console.log("password not confirmed!")
         return cb(null, false);

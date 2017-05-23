@@ -111,7 +111,7 @@ app.post('/login',
 app.post('/signup',
   passport.authenticate('local-signup', { failureRedirect: '/login' }),
   function(req, res) {
-    res.render('home', { user: req.user });
+    res.redirect('/');
   });
 
 app.get('/logout',

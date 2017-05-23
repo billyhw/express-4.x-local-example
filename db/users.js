@@ -10,6 +10,25 @@ const knexLogger  = require('knex-logger');
 //   , { id: 2, username: 'jill', password: 'birthday', displayName: 'Jill', email: 'jill@example.com' }
 // ];
 
+exports.findById = function(id, cb) {
+  process.nextTick(function() {
+    knex.select("*")
+    .from("users")
+    .where("id", "=", id)
+    .then((record) => {
+      console.log("searching id")
+      console.log("record:", record)
+      if (record.length > 0 && record[0].id === id) {
+        console.log("user found!")
+        return cb(null, record[0]);
+      }
+      console.log("user not found!")
+      cb(new Error('User ' + id + ' does not exist'));
+    })
+    .catch((err) => cb(err));
+  })
+}
+
 // exports.findById = function(id, cb) {
 //   process.nextTick(function() {
 //     var idx = id - 1;

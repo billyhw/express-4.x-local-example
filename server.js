@@ -3,7 +3,6 @@ var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var db = require('./db');
 
-
 // Configure the local strategy for use by Passport.
 //
 // The local strategy require a `verify` function which receives the credentials
@@ -11,17 +10,41 @@ var db = require('./db');
 // that the password is correct and then invoke `cb` with a user object, which
 // will be set at `req.user` in route handlers after authentication.
 
-const localOptions = {
-  usernameField: 'email'
-};
-
-passport.use(new Strategy( localOptions,
+passport.use('local', new Strategy( {
+    usernameField: 'email'
+  },
   function(username, password, cb) {
     db.users.findByUsername(username, function(err, user) {
       if (err) { return cb(err); }
       if (!user) { return cb(null, false); }
-      if (user.password != password) { return cb(null, false); }
+      if (user.password !== password) { return cb(null, false); }
       return cb(null, user);
+  });
+}));
+
+passport.use('local-signup', new Strategy({
+    usernameField : 'email',
+    passReqToCallback: true
+  },
+  function(req, username, password, cb) {
+    db.users.findByUsername(username, function(err, user) {
+      // console.log("from passport local signup", req.body)
+      if (err) { return cb(err); }
+      if (req.body.password !== req.body.passwordConfirmation) {
+        console.log("password not confirmed!")
+        return cb(null, false);
+      }
+      if (!user) {
+        console.log("adding new user!")
+        db.users.addUser(req, function(err) {
+          if (err) { return cb(err); }
+          console.log("new user added, loggin in")
+          db.user.findByUsername(username, function(err, user) {
+            if (err) { return cb(err); }
+            return cb(null, user)
+          });
+        });
+      };
     });
   }));
 
@@ -43,9 +66,6 @@ passport.deserializeUser(function(id, cb) {
     cb(null, user);
   });
 });
-
-
-
 
 // Create a new Express application.
 var app = express();
@@ -86,6 +106,12 @@ app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
+  });
+
+app.post('/signup',
+  passport.authenticate('local-signup', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.render('home', { user: req.user });
   });
 
 app.get('/logout',

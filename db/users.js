@@ -5,21 +5,21 @@ const knexConfig  = require("../knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const knexLogger  = require('knex-logger');
 
-var records = [
-    { id: 1, username: 'jack', password: 'secret', displayName: 'Jack', email: 'jack@example.com' }
-  , { id: 2, username: 'jill', password: 'birthday', displayName: 'Jill', email: 'jill@example.com' }
-];
+// var records = [
+//     { id: 1, username: 'jack', password: 'secret', displayName: 'Jack', email: 'jack@example.com' }
+//   , { id: 2, username: 'jill', password: 'birthday', displayName: 'Jill', email: 'jill@example.com' }
+// ];
 
-exports.findById = function(id, cb) {
-  process.nextTick(function() {
-    var idx = id - 1;
-    if (records[idx]) {
-      cb(null, records[idx]);
-    } else {
-      cb(new Error('User ' + id + ' does not exist'));
-    }
-  });
-}
+// exports.findById = function(id, cb) {
+//   process.nextTick(function() {
+//     var idx = id - 1;
+//     if (records[idx]) {
+//       cb(null, records[idx]);
+//     } else {
+//       cb(new Error('User ' + id + ' does not exist'));
+//     }
+//   });
+// }
 
 // exports.findByUsername = function(username, cb) {
 //   process.nextTick(function() {
@@ -41,7 +41,7 @@ exports.findByUsername = function(username, cb) {
     .then((record) => {
       console.log("searching username")
       console.log("record:", record)
-      if (record[0].email === username) {
+      if (record.length > 0 && record[0].email === username) {
         console.log("user found!")
         return cb(null, record[0]);
       }
@@ -51,6 +51,22 @@ exports.findByUsername = function(username, cb) {
     .catch((err) => cb(err));
   })
 }
+
+exports.addUser = function(req, cb) {
+  process.nextTick(function() {
+    console.log("addUser:", req.body)
+    knex("users")
+      .insert({
+          "firstName": req.body.firstName,
+          "lastName": req.body.lastName,
+          "email": req.body.email,
+          "password": req.body.password,
+          "address": req.body.address,
+          "phoneNumber": req.body.phoneNumber
+        })
+      .catch((err) => cb(err));
+    })
+  }
 
     // passport.use('local-login', new LocalStrategy(options,
     //   function(req, username, password, cb) {

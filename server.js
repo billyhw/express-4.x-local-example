@@ -37,17 +37,14 @@ passport.use('local-signup', new Strategy({
       }
       if (!user) {
         console.log("adding new user!")
-        db.users.addUser(req, function(err) {
+        db.users.addUser(req, function(err, user) {
           if (err) { return cb(err); }
-          console.log("new user added, loggin in")
-          db.user.findByUsername(username, function(err, user) {
-            if (err) { return cb(err); }
-            return cb(null, user)
+          return cb(null, user)
           });
-        });
-      };
-    });
-  }));
+        };
+      });
+    }
+  ));
 
 
 // Configure Passport authenticated session persistence.

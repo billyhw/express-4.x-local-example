@@ -19,10 +19,10 @@ exports.findById = function(id, cb) {
       console.log("searching id")
       console.log("record:", record)
       if (record.length > 0 && record[0].id === id) {
-        console.log("user found!")
+        console.log("find by ID: user found!")
         return cb(null, record[0]);
       }
-      console.log("user not found!")
+      console.log("find by ID: user not found!")
       cb(new Error('User ' + id + ' does not exist'));
     })
     .catch((err) => cb(err));
@@ -58,13 +58,13 @@ exports.findByUsername = function(username, cb) {
     .from("users")
     .where("email", "=", username)
     .then((record) => {
-      console.log("searching username")
-      console.log("record:", record)
+      console.log("findByUsername: searching username")
+      console.log("findByUsername: record:", record)
       if (record.length > 0 && record[0].email === username) {
-        console.log("user found!")
+        console.log("findByUsername: user found!")
         return cb(null, record[0]);
       }
-      console.log("user not found!")
+      console.log("findByUsername: user not found!")
       return cb(null, null);
     })
     .catch((err) => cb(err));
@@ -83,6 +83,9 @@ exports.addUser = function(req, cb) {
           "address": req.body.address,
           "phoneNumber": req.body.phoneNumber
         })
+      .then(() => {
+        exports.findByUsername(req.body.email, cb)
+      })
       .catch((err) => cb(err));
     })
   }
